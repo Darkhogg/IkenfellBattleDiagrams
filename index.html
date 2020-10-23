@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Ikenfell</title>
+
+        <script src="/script.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+        <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    </head>
+    <body x-data="init()" x-init="updateCanvas()">
+    
+        <div class="container mx-auto">
+            <div>
+                <img x-ref="mar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAVBAMAAACEd8K6AAAAIVBMVEUAAAAAAAAgFkCIFkaIFkc9NKThPSncamP2uITX19f///9KEnzSAAAAAXRSTlMAQObYZgAAAIRJREFUCNdjYGAQFBRkAALGtLQ0ASAtBqQTgbRQkjJIgNEio8MMRBt2SLW1gehyqTaweAdE3Ni4GCIf0RGWZsjAKD41dBrQAMbCyMhgEN0YOjXQzJBBQnDVqoVAm8QFXVwcJQSAtroAIdBCRkcGEZC9Io4gxADiAIUYGF0EIHgVUFJqIQCOIh4djBKTWQAAAABJRU5ErkJggg=="/>
+            </div>
+
+            <div>
+                <div>
+                    <label>
+                        <span class="w-40">Outside Colors:</span>
+                        <input type="text" x-model="outColor1" class="w-20 border" @change="updateCanvas()"/>
+                        <input type="text" x-model="outColor2" class="w-20 border" @change="updateCanvas()"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <span class="w-40">Battlefield Colors:</span>
+                        <input type="text" x-model="inColor1" class="w-20 border" @change="updateCanvas()"/>
+                        <input type="text" x-model="inColor2" class="w-20 border" @change="updateCanvas()"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <span class="w-40">Highlight Colors:</span>
+                        <input type="text" x-model="hlColor1" class="w-20 border" @change="updateCanvas()"/>
+                        <input type="text" x-model="hlColor2" class="w-20 border" @change="updateCanvas()"/>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <span class="w-40">Outline Color:</span>
+                        <input type="text" x-model="olColor" class="w-20 border" @change="updateCanvas()"/>
+                    </label>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="12">Highlights</th>
+                        </tr>
+                    </thead>
+                    <template x-for="row in 5">
+                        <tr>
+                            <template x-for="col in 12">
+                                <td
+                                    class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
+                                    :class="{'bg-orange-500': highlights[row - 1][col - 1]}"
+                                    @click="highlights = updateCell(highlights, row, col, true); updateCanvas()"
+                                    @contextmenu="highlights = updateCell(highlights, row, col, false); updateCanvas(); $event.preventDefault()"
+                                    x-text="(col === 7 && row === 3) ? 'X' : ''"
+                                >
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </table>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="12">Outlines</th>
+                        </tr>
+                    </thead>
+                    <template x-for="row in 5">
+                        <tr>
+                            <template x-for="col in 12">
+                                <td
+                                    class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
+                                    :class="{'bg-green-500': outlines[row - 1][col - 1]}"
+                                    @click="outlines = updateCell(outlines, row, col, true); updateCanvas()"
+                                    @contextmenu="outlines = updateCell(outlines, row, col, false); updateCanvas(); $event.preventDefault()"
+                                    x-text="(col === 7 && row === 3) ? 'X' : ''"
+                                >
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </table>
+            </div>
+
+            <div>
+                <p class="font-bold">Result (click to download)</p>
+                <canvas class="my-1" x-ref="canvas" width="240" height="40" @click="downloadImage()"></canvas>
+                <canvas class="my-1" x-ref="canvasx2" width="480" height="80" @click="downloadImage()"></canvas>
+            </div>
+        </div>
+    </body>
+</html>

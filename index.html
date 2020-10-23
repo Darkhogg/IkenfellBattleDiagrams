@@ -7,14 +7,18 @@
 
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
+        <style>
+            .img-pix {
+                image-rendering: -moz-crisp-edges;
+                image-rendering: crisp-edges;
+                image-rendering: pixelated;
+            }
+        </style>
     </head>
-    <body x-data="init()" x-init="updateCanvas()">
+    <body x-data="init()" x-init="updateCanvas">
     
         <div class="container mx-auto">
-            <div>
-                <img x-ref="mar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAVBAMAAACEd8K6AAAAIVBMVEUAAAAAAAAgFkCIFkaIFkc9NKThPSncamP2uITX19f///9KEnzSAAAAAXRSTlMAQObYZgAAAIRJREFUCNdjYGAQFBRkAALGtLQ0ASAtBqQTgbRQkjJIgNEio8MMRBt2SLW1gehyqTaweAdE3Ni4GCIf0RGWZsjAKD41dBrQAMbCyMhgEN0YOjXQzJBBQnDVqoVAm8QFXVwcJQSAtroAIdBCRkcGEZC9Io4gxADiAIUYGF0EIHgVUFJqIQCOIh4djBKTWQAAAABJRU5ErkJggg=="/>
-            </div>
-
             <div>
                 <div>
                     <label>
@@ -87,6 +91,13 @@
                         </tr>
                     </template>
                 </table>
+            </div>
+
+            <div>
+                <p class="font-bold">Sprite</p>
+                <template x-for="spr in SPRITES">
+                    <img :x-ref="spr" width="28" class="img-pix inline" @click="selectSprite(spr); updateCanvas()" :src="'imgs/'+spr+'.png'" @load="updateCanvas()"/>
+                </template>
             </div>
 
             <div>

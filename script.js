@@ -100,10 +100,14 @@ function drawDiagramToCanvas (diagram, canvas) {
     imY * CH - 16)
 }
 
+const SPRITES = ['mari', 'nel', 'rook', 'perty', 'ima', 'gilda']
+
 function init () {
     return {
+        SPRITES,
         highlights: Array(5).fill().map(() => Array(12).fill(false)),
         outlines: Array(5).fill().map(() => Array(12).fill(false)),
+        sprite: SPRITES[0],
         outColor1: '#333',
         outColor2: '#666',
         inColor1: '#47b',
@@ -112,14 +116,18 @@ function init () {
         hlColor2: '#ee5',
         olColor: '#fff',
         tColor: '#fff',
+        selectSprite (name) {
+          this.sprite = name
+        },
         updateCell (array, row, col, value) {
           return array.map((rowArr, rowIdx) => (row - 1 === rowIdx)
             ? rowArr.map((colVal, colIdx) => col - 1 === colIdx ? value : colVal)
             : rowArr)
         },
         updateCanvas () {
+          console.log(this.sprite, this.$refs[this.sprite])
           drawDiagramToCanvas({
-            sprite: this.$refs.mar,
+            sprite: this.$refs[this.sprite],
             highlights: this.highlights,
             outlines: this.outlines,
             colorOut: [this.outColor1, this.outColor2],

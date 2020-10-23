@@ -80,24 +80,44 @@ function calcOutlines (map, x, y) {
   return l | r | t | b | tl | tr | bl | br
 }
 
+function drawShadow (ctx, cx, cy) {
+  ctx.strokeStyle = 'rgba(0,0,0,0.3)'
+  ctx.lineWidth = 1
+  ctx.lineCap = 'square'
+  
+  ctx.beginPath()
+  ctx.moveTo(cx - 5.5, cy + 0.5)
+  ctx.lineTo(cx + 6.5, cy + 0.5)
+  ctx.moveTo(cx - 4.5, cy - 0.5)
+  ctx.lineTo(cx + 5.5, cy - 0.5)
+  ctx.moveTo(cx - 4.5, cy + 1.5)
+  ctx.lineTo(cx + 5.5, cy + 1.5)
+  ctx.stroke()
+}
+
 function drawDiagramToCanvas (diagram, canvas) {
   var ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const vOff = canvas.height - (CH * BATTLE_HEIGHT)
+
   for (let x = 0; x < BATTLE_WIDTH; x++) {
     for (let y = 0; y < BATTLE_HEIGHT; y++) {
       const parity = (x + y) % 2
       const colors = diagram.highlights[y][x] ? diagram.colorHl : (y >= 1 && y <= 3) ? diagram.colorIn : diagram.colorOut
       const outlines = calcOutlines(diagram.outlines, x, y)
       
-      drawCell(ctx, x * CW + y * CH, y* CH, colors[parity])
-      drawOutlines(ctx, outlines, x * CW + y * CH, y* CH, diagram.colorOl)
+      drawCell(ctx, x * CW + y * CH, vOff + y * CH, colors[parity])
+      drawOutlines(ctx, outlines, x * CW + y * CH, vOff + y * CH, diagram.colorOl)
     }
   }
 
   const imX = 5
   const imY = 2
+  drawShadow(ctx, imX * CW + imX * CH + 3, vOff + imY * CH + 3)
   ctx.drawImage(diagram.sprite, 
     imX * CW + imX * CH - 4,
-    imY * CH - 16)
+    vOff + imY * CH - 20)
 }
 
 const SPRITES = ['mari', 'nel', 'rook', 'perty', 'ima', 'gilda']
@@ -114,8 +134,8 @@ function init () {
         inColor2: '#7ad',
         hlColor1: '#ea4',
         hlColor2: '#ee5',
-        olColor: '#fff',
-        tColor: '#fff',
+        olColor: '#c00',
+        tColor: '#c00',
         selectSprite (name) {
           this.sprite = name
         },
@@ -139,10 +159,11 @@ function init () {
 
           const x2ctx = this.$refs.canvasx2.getContext('2d')
           x2ctx.imageSmoothingEnabled = false;
+          x2ctx.clearRect(0, 0, this.$refs.canvasx2.width, this.$refs.canvasx2.height);
           x2ctx.drawImage(
             this.$refs.canvas, 
-            0, 0, 240, 40,
-            0, 0, 480, 80
+            0, 0, this.$refs.canvas.width, this.$refs.canvas.height,
+            0, 0, this.$refs.canvasx2.width, this.$refs.canvasx2.height,
           );
         },
         downloadImage() {

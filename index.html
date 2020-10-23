@@ -96,14 +96,14 @@
             <div>
                 <p class="font-bold">Sprite</p>
                 <template x-for="spr in SPRITES">
-                    <img :x-ref="spr" width="28" class="img-pix inline" @click="selectSprite(spr); updateCanvas()" :src="'imgs/'+spr+'.png'" @load="updateCanvas()"/>
+                    <img :x-ref="spr" width="32" height="48" class="img-pix inline" @click="selectSprite(spr); updateCanvas()" :src="'imgs/'+spr+'.png'" @load="updateCanvas()"/>
                 </template>
             </div>
 
             <div>
                 <p class="font-bold">Result (click to download)</p>
-                <canvas class="my-1" x-ref="canvas" width="240" height="40" @click="downloadImage()"></canvas>
-                <canvas class="my-1" x-ref="canvasx2" width="480" height="80" @click="downloadImage()"></canvas>
+                <canvas class="my-1" x-ref="canvas" width="240" height="48" @click="downloadImage()"></canvas>
+                <canvas class="my-1" x-ref="canvasx2" width="480" height="96" @click="downloadImage()"></canvas>
             </div>
         </div>
     </body>

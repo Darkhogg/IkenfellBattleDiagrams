@@ -23,6 +23,23 @@ function drawCell (ctx, ox, oy, color) {
   drawPerspectiveSquare(ctx, ox, oy, CW, CH, color)
 }
 
+function drawTarget (ctx, ox, oy, color) {
+  ctx.strokeStyle = color
+  ctx.lineWidth = 1
+  ctx.lineCap = 'square'
+  
+  ctx.beginPath()
+  ctx.moveTo(ox + 7.5, oy + 2.5)
+  ctx.lineTo(ox + 13.5, oy + 2.5)
+  ctx.moveTo(ox + 10.5, oy + 3.5)
+  ctx.lineTo(ox + 11.5, oy + 3.5)
+  ctx.moveTo(ox + 11.5, oy + 4.5)
+  ctx.lineTo(ox + 12.5, oy + 4.5)
+  ctx.moveTo(ox + 12.5, oy + 5.5)
+  ctx.lineTo(ox + 13.5, oy + 5.5)
+  ctx.stroke()
+}
+
 const OLW = 2
 const OLH = 1
 const OL_MASK = {
@@ -101,23 +118,31 @@ function drawDiagramToCanvas (diagram, canvas) {
 
   const vOff = canvas.height - (CH * BATTLE_HEIGHT)
 
-  for (let x = 0; x < BATTLE_WIDTH; x++) {
-    for (let y = 0; y < BATTLE_HEIGHT; y++) {
-      const parity = (x + y) % 2
-      const colors = diagram.highlights[y][x] ? diagram.colorHl : (y >= 1 && y <= 3) ? diagram.colorIn : diagram.colorOut
-      const outlines = calcOutlines(diagram.outlines, x, y)
+  for (let bx = 0; bx < BATTLE_WIDTH; bx++) {
+    for (let by = 0; by < BATTLE_HEIGHT; by++) {
+      const parity = (bx + by) % 2
+      const colors = diagram.highlights[by][bx] ? diagram.colorHl : (by >= 1 && by <= 3) ? diagram.colorIn : diagram.colorOut
+      const outlines = calcOutlines(diagram.outlines, bx, by)
       
-      drawCell(ctx, x * CW + y * CH, vOff + y * CH, colors[parity])
-      drawOutlines(ctx, outlines, x * CW + y * CH, vOff + y * CH, diagram.colorOl)
+      const x = (bx * CW) + (by * CH)
+      const y = vOff + (by * CH)
+
+      drawCell(ctx, x, y, colors[parity])
+      drawOutlines(ctx, outlines, x, y, diagram.colorOl)
+      if (diagram.targets[by][bx]) {
+        drawTarget(ctx, x, y, diagram.colorTg)
+      }
     }
   }
 
-  const imX = 5
-  const imY = 2
-  drawShadow(ctx, imX * CW + imX * CH + 3, vOff + imY * CH + 3)
-  ctx.drawImage(diagram.sprite, 
-    imX * CW + imX * CH - 4,
-    vOff + imY * CH - 20)
+  const sprBX = diagram.spritePosition.x - 1
+  const sprBY = diagram.spritePosition.y - 1
+
+  const sprCX = ((sprBX + 0.5) * CW) + ((sprBY + 0.5) * CH) - 1
+  const sprCY = vOff + ((sprBY + 0.5) * CH) - 1
+
+  drawShadow(ctx, sprCX, sprCY)
+  ctx.drawImage(diagram.sprite, sprCX - 7, sprCY - 23)
 }
 
 const SPRITES = ['mari', 'nel', 'rook', 'perty', 'ima', 'gilda']
@@ -127,6 +152,7 @@ function init () {
         SPRITES,
         highlights: Array(5).fill().map(() => Array(12).fill(false)),
         outlines: Array(5).fill().map(() => Array(12).fill(false)),
+        targets: Array(5).fill().map(() => Array(12).fill(false)),
         sprite: SPRITES[0],
         outColor1: '#333',
         outColor2: '#666',
@@ -136,6 +162,8 @@ function init () {
         hlColor2: '#ee5',
         olColor: '#c00',
         tColor: '#c00',
+        sprPosX: 7,
+        sprPosY: 3,
         selectSprite (name) {
           this.sprite = name
         },
@@ -149,12 +177,14 @@ function init () {
           drawDiagramToCanvas({
             sprite: this.$refs[this.sprite],
             highlights: this.highlights,
+            targets: this.targets,
             outlines: this.outlines,
             colorOut: [this.outColor1, this.outColor2],
             colorIn: [this.inColor1, this.inColor2],
             colorHl: [this.hlColor1, this.hlColor2],
             colorOl: this.olColor,
             colorTg: this.tColor,
+            spritePosition: {x: this.sprPosX, y: this.sprPosY},
           }, this.$refs.canvas)
 
           const x2ctx = this.$refs.canvasx2.getContext('2d')

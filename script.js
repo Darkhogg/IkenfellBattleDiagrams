@@ -141,11 +141,16 @@ function drawDiagramToCanvas (diagram, canvas) {
   const sprCX = ((sprBX + 0.5) * CW) + ((sprBY + 0.5) * CH) - 1
   const sprCY = vOff + ((sprBY + 0.5) * CH) - 1
 
-  drawShadow(ctx, sprCX, sprCY)
-  ctx.drawImage(diagram.sprite, sprCX - 7, sprCY - 23)
+  if (diagram.shadow) {
+    drawShadow(ctx, sprCX, sprCY)
+  }
+  if (diagram.sprite) {
+    ctx.drawImage(diagram.sprite, sprCX - 7, sprCY - 23)
+  }
 }
 
 const SPRITES = ['mari', 'nel', 'rook', 'perty', 'ima', 'gilda']
+
 
 function init () {
     return {
@@ -164,6 +169,8 @@ function init () {
         tColor: '#c00',
         sprPosX: 7,
         sprPosY: 3,
+        drawSprite: true,
+        drawShadow: true,
         selectSprite (name) {
           this.sprite = name
         },
@@ -173,9 +180,9 @@ function init () {
             : rowArr)
         },
         updateCanvas () {
-          console.log(this.sprite, this.$refs[this.sprite])
           drawDiagramToCanvas({
-            sprite: this.$refs[this.sprite],
+            sprite: this.drawSprite ? this.$refs[this.sprite] : null,
+            shadow: this.drawShadow,
             highlights: this.highlights,
             targets: this.targets,
             outlines: this.outlines,

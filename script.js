@@ -173,6 +173,7 @@ function init () {
         sprOffY: 0,
         drawSprite: true,
         drawShadow: true,
+        uploadedDataUrl: null,
         selectSprite (name) {
           this.sprite = name
         },
@@ -211,6 +212,13 @@ function init () {
           link.download = 'diagram.png';
           link.href = this.$refs.canvas.toDataURL()
           link.click()
+        },
+        onUploadSprite(file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            this.uploadedDataUrl = event.target.result;
+          };
+          reader.readAsDataURL(file);
         }
     }
 }

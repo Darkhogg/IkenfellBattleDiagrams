@@ -54,71 +54,73 @@
                     </label>
                 </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="12">Highlights</th>
-                        </tr>
-                    </thead>
-                    <template x-for="row in 5">
-                        <tr>
-                            <template x-for="col in 12">
-                                <td
-                                    class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
-                                    :class="{'bg-orange-500': highlights[row - 1][col - 1]}"
-                                    @click="highlights = updateCell(highlights, row, col, true); updateCanvas()"
-                                    @contextmenu="highlights = updateCell(highlights, row, col, false); updateCanvas(); $event.preventDefault()"
-                                    x-text="(col == sprPosX && row == sprPosY) ? 'X' : ''"
-                                >
-                                </td>
-                            </template>
-                        </tr>
-                    </template>
-                </table>
+                <div class="flex flex-row">
+                    <table class="mx-1">
+                        <thead>
+                            <tr>
+                                <th colspan="12">Highlights</th>
+                            </tr>
+                        </thead>
+                        <template x-for="row in 5">
+                            <tr>
+                                <template x-for="col in 12">
+                                    <td
+                                        class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
+                                        :class="{'bg-orange-500': highlights[row - 1][col - 1]}"
+                                        @click="highlights = updateCell(highlights, row, col, true); updateCanvas()"
+                                        @contextmenu="highlights = updateCell(highlights, row, col, false); updateCanvas(); $event.preventDefault()"
+                                        x-text="(col == sprPosX && row == sprPosY) ? 'X' : ''"
+                                    >
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </table>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="12">Outlines</th>
-                        </tr>
-                    </thead>
-                    <template x-for="row in 5">
-                        <tr>
-                            <template x-for="col in 12">
-                                <td
-                                    class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
-                                    :class="{'bg-green-500': outlines[row - 1][col - 1]}"
-                                    @click="outlines = updateCell(outlines, row, col, true); updateCanvas()"
-                                    @contextmenu="outlines = updateCell(outlines, row, col, false); updateCanvas(); $event.preventDefault()"
-                                    x-text="(col == sprPosX && row == sprPosY) ? 'X' : ''"
-                                >
-                                </td>
-                            </template>
-                        </tr>
-                    </template>
-                </table>
+                    <table class="mx-1">
+                        <thead>
+                            <tr>
+                                <th colspan="12">Outlines</th>
+                            </tr>
+                        </thead>
+                        <template x-for="row in 5">
+                            <tr>
+                                <template x-for="col in 12">
+                                    <td
+                                        class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
+                                        :class="{'bg-green-500': outlines[row - 1][col - 1]}"
+                                        @click="outlines = updateCell(outlines, row, col, true); updateCanvas()"
+                                        @contextmenu="outlines = updateCell(outlines, row, col, false); updateCanvas(); $event.preventDefault()"
+                                        x-text="(col == sprPosX && row == sprPosY) ? 'X' : ''"
+                                    >
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </table>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="12">Target Markers</th>
-                        </tr>
-                    </thead>
-                    <template x-for="row in 5">
-                        <tr>
-                            <template x-for="col in 12">
-                                <td
-                                    class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
-                                    :class="{'bg-red-500': targets[row - 1][col - 1]}"
-                                    @click="targets = updateCell(targets, row, col, true); updateCanvas()"
-                                    @contextmenu="targets = updateCell(targets, row, col, false); updateCanvas(); $event.preventDefault()"
-                                    x-text="(col == sprPosX && row == sprPosY) ? 'X' : ''"
-                                >
-                                </td>
-                            </template>
-                        </tr>
-                    </template>
-                </table>
+                    <table class="mx-1">
+                        <thead>
+                            <tr>
+                                <th colspan="12">Target Markers</th>
+                            </tr>
+                        </thead>
+                        <template x-for="row in 5">
+                            <tr>
+                                <template x-for="col in 12">
+                                    <td
+                                        class="border border-black bg-gray-600 w-6 h-6 text-xs leading-3 text-center select-none"
+                                        :class="{'bg-red-500': targets[row - 1][col - 1]}"
+                                        @click="targets = updateCell(targets, row, col, true); updateCanvas()"
+                                        @contextmenu="targets = updateCell(targets, row, col, false); updateCanvas(); $event.preventDefault()"
+                                        x-text="(col == sprPosX && row == sprPosY) ? 'X' : ''"
+                                    >
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </table>
+                </div>
             </div>
 
             <div>

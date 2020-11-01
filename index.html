@@ -132,6 +132,7 @@
                 <p></p><label>
                     <input type="checkbox" x-model="drawShadow" class="border" @change="updateCanvas()"/>
                     <span class="w-40">Draw Shadow</span>
+                    <input type="number" min="1" max="16" x-model="shadowWidth" class="w-8 border" @change="updateCanvas()"/>
                 </label></p>
                 <template x-for="spr in SPRITES">
                     <img :x-ref="spr" width="32" height="48" class="img-pix inline" @click="selectSprite(spr); updateCanvas()" :src="'imgs/'+spr+'.png'" @load="updateCanvas()"/>

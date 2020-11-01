@@ -97,18 +97,22 @@ function calcOutlines (map, x, y) {
   return l | r | t | b | tl | tr | bl | br
 }
 
-function drawShadow (ctx, cx, cy) {
+const SHADOW = [
+  {xf: 1, xt: -1, y: -1},
+  {xf: 0, xt: 0, y: 0},
+  {xf: 1, xt: -1, y: 1},
+]
+
+function drawShadow (ctx, cx, cy, w) {
   ctx.strokeStyle = 'rgba(0,0,0,0.3)'
   ctx.lineWidth = 1
   ctx.lineCap = 'square'
   
   ctx.beginPath()
-  ctx.moveTo(cx - 5.5, cy + 0.5)
-  ctx.lineTo(cx + 6.5, cy + 0.5)
-  ctx.moveTo(cx - 4.5, cy - 0.5)
-  ctx.lineTo(cx + 5.5, cy - 0.5)
-  ctx.moveTo(cx - 4.5, cy + 1.5)
-  ctx.lineTo(cx + 5.5, cy + 1.5)
+  for (const l of SHADOW) {
+    ctx.moveTo(cx - w + l.xf + 0.5, cy + l.y + 0.5)
+    ctx.lineTo(cx + w + l.xt + 0.5, cy + l.y + 0.5)
+  }
   ctx.stroke()
 }
 
@@ -142,7 +146,7 @@ function drawDiagramToCanvas (diagram, canvas) {
   const sprCY = vOff + ((sprBY + 0.5) * CH) - 1
 
   if (diagram.shadow) {
-    drawShadow(ctx, sprCX, sprCY)
+    drawShadow(ctx, sprCX, sprCY, diagram.shadow)
   }
   if (diagram.sprite) {
     ctx.drawImage(diagram.sprite, sprCX - 7 + diagram.spriteOffset.x, sprCY - 23 + diagram.spriteOffset.y)
@@ -173,6 +177,7 @@ function init () {
         sprOffY: 0,
         drawSprite: true,
         drawShadow: true,
+        shadowWidth: 6,
         uploadedDataUrl: null,
         selectSprite (name) {
           this.sprite = name
@@ -185,7 +190,7 @@ function init () {
         updateCanvas () {
           drawDiagramToCanvas({
             sprite: this.drawSprite ? this.$refs[this.sprite] : null,
-            shadow: this.drawShadow,
+            shadow: this.drawShadow ? parseInt(this.shadowWidth) : null,
             highlights: this.highlights,
             targets: this.targets,
             outlines: this.outlines,

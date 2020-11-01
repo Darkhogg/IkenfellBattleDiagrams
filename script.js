@@ -145,7 +145,7 @@ function drawDiagramToCanvas (diagram, canvas) {
     drawShadow(ctx, sprCX, sprCY)
   }
   if (diagram.sprite) {
-    ctx.drawImage(diagram.sprite, sprCX - 7, sprCY - 23)
+    ctx.drawImage(diagram.sprite, sprCX - 7 + diagram.spriteOffset.x, sprCY - 23 + diagram.spriteOffset.y)
   }
 }
 
@@ -169,6 +169,8 @@ function init () {
         tColor: '#c00',
         sprPosX: 7,
         sprPosY: 3,
+        sprOffX: 0,
+        sprOffY: 0,
         drawSprite: true,
         drawShadow: true,
         selectSprite (name) {
@@ -191,7 +193,8 @@ function init () {
             colorHl: [this.hlColor1, this.hlColor2],
             colorOl: this.olColor,
             colorTg: this.tColor,
-            spritePosition: {x: this.sprPosX, y: this.sprPosY},
+            spritePosition: {x: parseInt(this.sprPosX), y: parseInt(this.sprPosY)},
+            spriteOffset: {x: parseInt(this.sprOffX), y: parseInt(this.sprOffY)},
           }, this.$refs.canvas)
 
           const x2ctx = this.$refs.canvasx2.getContext('2d')

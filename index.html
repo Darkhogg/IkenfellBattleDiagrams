@@ -54,14 +54,6 @@
                     </label>
                 </div>
 
-                <div>
-                    <label>
-                        <span class="w-40">Sprite Position:</span>
-                        <input type="number" min="1" max="12" x-model="sprPosX" class="w-20 border" @change="updateCanvas()"/>
-                        <input type="number" min="1" max="5" x-model="sprPosY" class="w-20 border" @change="updateCanvas()"/>
-                    </label>
-                </div>
-
                 <table>
                     <thead>
                         <tr>
@@ -142,6 +134,22 @@
                 <template x-for="spr in SPRITES">
                     <img :x-ref="spr" width="32" height="48" class="img-pix inline" @click="selectSprite(spr); updateCanvas()" :src="'imgs/'+spr+'.png'" @load="updateCanvas()"/>
                 </template>
+            </div>
+
+            <div>
+                <label>
+                    <span class="w-40">Sprite Grid Position:</span>
+                    <input type="number" min="1" max="12" x-model="sprPosX" class="w-8 border" @change="updateCanvas()"/>
+                    <input type="number" min="1" max="5" x-model="sprPosY" class="w-8 border" @change="updateCanvas()"/>
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    <span class="w-40">Sprite Pixel Offset:</span>
+                    <input type="number" min="-16" max="16" x-model="sprOffX" class="w-8 border" @change="updateCanvas()"/>
+                    <input type="number" min="-8" max="8" x-model="sprOffY" class="w-8 border" @change="updateCanvas()"/>
+                </label>
             </div>
 
             <div>
